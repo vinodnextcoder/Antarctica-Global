@@ -1,2 +1,1 @@
-# Antarctica-Global
- Your Task - Create a Restful API for Registration, Login & a getUserList
+Create DB design and architecture for an admin panel for user login
