@@ -129,10 +129,12 @@ router.post('/read', VerifyToken, function (req, res) {
                     });
                 }
                 else {
+                    logger.error('There was a problem adding the information to the database. ', "not")
                     res.status(400).send({ status: 400, msg: "Invalid Page no", data: null });
                 }
             }
             else {
+                logger.error('There was a problem adding the information to the database. ', "not")
                 res.status(400).send({ status: 400, msg: "Missing Param", data: null });
             }
         }
@@ -184,7 +186,9 @@ router.post('/login', function (req, res) {
             logger.error('There was a problem adding the information to the database. ', err)
             return res.status(500).send('Error on the server.');
         }
-        if (!user) return res.status(404).send('No user found.');
+        if (!user) {
+            return res.status(404).send('No user found.');
+        }
         var passwordIsValid = bcrypt.compareSync(req.body.password, user.password);
         if (!passwordIsValid) return res.status(401).send({ auth: false, token: null });
 
