@@ -18,6 +18,10 @@
     "jsonwebtoken": "^7.4.1",
     "kafkajs": "^1.15.0",
     "mongoose": "^5.11.14",
-    "uuid": "^8.3.2"
+    "morgan": "^1.10.0",
+    "morgan-json": "^1.1.0",
+    "uuid": "^8.3.2",
+    "winston": "^3.3.3",
+    "winston-logsene": "^2.1.0"
   }
 }

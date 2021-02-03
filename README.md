@@ -11,3 +11,7 @@ To start step
 3.create admin user from other API
 3.read api have funtion to search
 4.pagination added for search api
+  "morgan": "^1.10.0",
+    "morgan-json": "^1.1.0",
+    "winston": "^3.3.3",
+    "winston-logsene": "^2.1.0"

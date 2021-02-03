@@ -37,11 +37,7 @@ router.get('/readRoles', function (req, res) {
 });
 
 
-
-// #############################user
-
 router.post('/createUser', VerifyToken, function (req, res) {
-    console.log(req.userRoles)
     async.waterfall([
         function (callback) {
             callback(null, true);
@@ -63,8 +59,11 @@ router.post('/createUser', VerifyToken, function (req, res) {
                 status: "ACTIVE"
             },
                 function (err, user) {
-                    if (err) return res.status(500).send("There was a problem adding the information to the database.");
-                    {
+                    if (err) {
+                        logger.error('There was a problem adding the information to the database. ', err)
+                        return res.status(500).send("There was a problem adding the information to the database.");
+                    }
+                    else {
                         res.status(201).send({ status: 201, msg: "Sucess created user", data: user })
                     }
                 });
@@ -121,6 +120,7 @@ router.post('/read', VerifyToken, function (req, res) {
                     ]
                     adminUser.aggregate(pipeline, function (err, users) {
                         if (err) {
+                            logger.error('There was a problem adding the information to the database. ', err)
                             return res.status(500).send("There was a problem finding the users.");
                         }
                         else {
@@ -129,11 +129,11 @@ router.post('/read', VerifyToken, function (req, res) {
                     });
                 }
                 else {
-                    if (err) return res.status(400).send({ status: 400, msg: "Invalid Page no", data: null });
+                    res.status(400).send({ status: 400, msg: "Invalid Page no", data: null });
                 }
             }
             else {
-                if (err) return res.status(400).send({ status: 400, msg: "Missing Param", data: null });
+                res.status(400).send({ status: 400, msg: "Missing Param", data: null });
             }
         }
     ], function (err, result) {
@@ -179,7 +179,11 @@ router.post('/updateuser', VerifyToken, function (req, res) {
 router.post('/login', function (req, res) {
   console.log(req.body.email)
     adminUser.findOne({ email: req.body.email }, function (err, user) {
-        if (err) return res.status(500).send('Error on the server.');
+        if (err) 
+        {
+            logger.error('There was a problem adding the information to the database. ', err)
+            return res.status(500).send('Error on the server.');
+        }
         if (!user) return res.status(404).send('No user found.');
         var passwordIsValid = bcrypt.compareSync(req.body.password, user.password);
         if (!passwordIsValid) return res.status(401).send({ auth: false, token: null });
